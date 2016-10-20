@@ -89,6 +89,7 @@ possible using the slice notation.
 
     >>> r[1000:] = 'quadruple digits or more'
     >>> r[999999999]
+    'quadruple digits or more'
 
 Overlapping ranges will result in a ``KeyError``.
 
