@@ -28,7 +28,7 @@ slices and ranges include the first index, and exclude the second.)
     'single digits'
 
 
-``RangeTree``s are optimized for lookups, and make use of the excellent
+``RangeTree`` s are optimized for lookups, and make use of the excellent
 bintrees library.
 
 .. _bintrees: https://bitbucket.org/mozman/bintrees
@@ -66,7 +66,8 @@ Negative integers are supported.
 
     >>> r[-10:0] = 'negative singles'
 
-Missing a range will result in a ``KeyError``. Use ``Rangtree.get()``.
+Missing a range will result in a ``KeyError``. Use ``Rangetree.get()`` or
+the ``in`` operator.
 
 .. code-block:: python
 
@@ -81,7 +82,7 @@ Missing a range will result in a ``KeyError``. Use ``Rangtree.get()``.
     >>> r.get(1000, 'no value')
     'no value'
 
-Open ranges (that go to infinity) are supported. Setting open ranges is only
+Open ranges (that go to or from infinity) are supported. Setting open ranges is only
 possible using the slice notation.
 
 .. code-block:: python
@@ -91,6 +92,8 @@ possible using the slice notation.
 
 Overlapping ranges will result in a ``KeyError``.
 
+.. code-block:: python
+
     >>> r = RangeTree()
     >>> r[1000:] = 'quadruple digits or more'
     >>> r[10000:] = 'ten thousand'
@@ -99,6 +102,38 @@ Overlapping ranges will result in a ``KeyError``.
       File "rangetree.py", line 58, in __setitem__
         raise KeyError('Overlapping intervals.')
     KeyError: 'Overlapping intervals.'
+
+``rangetree`` is fast. Using ``perf``, given 2000 intervals:
+
+.. code-block:: bash
+
+    $ pyperf timeit --rigorous -g --duplicate 5 -s "from rangetree import RangeTree; r = RangeTree()" -s "for i in range(2000):" -s " r[i*10:i*10+10] = i" "r[500]"
+    .........................................
+    3.75 us:  1 #######
+    3.77 us:  2 #############
+    3.80 us:  9 ###########################################################
+    3.82 us:  5 #################################
+    3.84 us:  8 #####################################################
+    3.86 us:  9 ###########################################################
+    3.89 us:  7 ##############################################
+    3.91 us:  8 #####################################################
+    3.93 us:  8 #####################################################
+    3.95 us:  6 ########################################
+    3.98 us: 10 ##################################################################
+    4.00 us: 12 ###############################################################################
+    4.02 us:  5 #################################
+    4.05 us:  9 ###########################################################
+    4.07 us:  5 #################################
+    4.09 us:  6 ########################################
+    4.11 us:  3 ####################
+    4.14 us:  4 ##########################
+    4.16 us:  2 #############
+    4.18 us:  0 |
+    4.20 us:  1 #######
+
+    Median +- std dev: 3.97 us +- 0.11 us
+
+The ballpark figure for lookups is in the single digit microseconds.
 
 Changelog
 ---------
