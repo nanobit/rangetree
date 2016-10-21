@@ -5,8 +5,8 @@ rangetree: easy range lookups
     :target: https://pypi.python.org/pypi/rangetree
 .. image:: https://travis-ci.org/nanobit/rangetree.svg?branch=master
     :target: https://travis-ci.org/nanobit/rangetree
-.. image:: https://coveralls.io/repos/nanobit/rangetree/badge.svg
-    :target: https://coveralls.io/r/nanobit/rangetree
+.. image:: https://coveralls.io/repos/github/nanobit/rangetree/badge.svg?branch=master
+    :target: https://coveralls.io/github/nanobit/rangetree?branch=master
 
 ``rangetree`` is an Apache2 licensed library, written in Python 3, for easy and fast
 lookups of numeric ranges.
